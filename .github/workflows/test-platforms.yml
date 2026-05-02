@@ -9,15 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        platform:
-          - aplite   # Pebble Classic / Steel (B&W, 144x168)
-          - basalt   # Pebble Time / Time Steel (Color, 144x168)
-          - chalk    # Pebble Time Round (Color, 180x180)
-          - diorite  # Pebble 2 (B&W, 144x168)
-          - emery    # Pebble Time 2 (Color, 200x228)
     steps:
       - uses: actions/checkout@v4
 
@@ -30,22 +21,11 @@ jobs:
           pip install pebble-tool
           pebble sdk install 4.9.169
 
-      - name: Set target platform to ${{ matrix.platform }}
-        run: |
-          python3 -c "
-          import json
-          with open('package.json') as f:
-              d = json.load(f)
-          d['pebble']['targetPlatforms'] = ['${{ matrix.platform }}']
-          with open('package.json', 'w') as f:
-              json.dump(d, f, indent=2)
-          "
-
-      - name: Build for ${{ matrix.platform }}
+      - name: Build for all platforms
         run: pebble build
 
       - name: Upload .pbw
         uses: actions/upload-artifact@v4
         with:
-          name: pebble-c25k-${{ matrix.platform }}
+          name: pebble-c25k-all-platforms
           path: build/pebble-c25k.pbw
