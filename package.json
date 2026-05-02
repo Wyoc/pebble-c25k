@@ -1,0 +1,22 @@
+{
+  "name": "pebble-c25k",
+  "author": "wyoc",
+  "version": "1.0.0",
+  "keywords": ["pebble-app"],
+  "private": true,
+  "dependencies": {},
+  "pebble": {
+    "displayName": "C25K",
+    "uuid": "6ee3b515-63da-40ca-aa45-9e9d8c0ec4c6",
+    "sdkVersion": "3",
+    "enableMultiJS": false,
+    "targetPlatforms": ["diorite"],
+    "watchapp": {
+      "watchface": false
+    },
+    "messageKeys": {},
+    "resources": {
+      "media": []
+    }
+  }
+}
