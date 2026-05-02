@@ -23,6 +23,19 @@ jobs:
           pebble sdk install 4.9.169
           echo "$HOME/.pebble-sdk/SDKs/current/bin" >> $GITHUB_PATH
 
+      - name: Sync version from tag
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          python3 -c "
+          import json
+          with open('package.json') as f:
+              d = json.load(f)
+          d['version'] = '$VERSION'
+          with open('package.json', 'w') as f:
+              json.dump(d, f, indent=2)
+          "
+
       - name: Build
         run: pebble build
 
