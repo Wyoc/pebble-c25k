@@ -1,0 +1,31 @@
+name: Test All Platforms
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Pebble SDK
+        run: |
+          pip install pebble-tool
+          pebble sdk install 4.9.169
+
+      - name: Build for all platforms
+        run: pebble build
+
+      - name: Upload .pbw
+        uses: actions/upload-artifact@v4
+        with:
+          name: pebble-c25k-all-platforms
+          path: build/pebble-c25k.pbw
