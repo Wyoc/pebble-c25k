@@ -2,6 +2,12 @@
 
 A Couch to 5K running app for the Pebble 2 smartwatch. Guides you through the complete 9-week C25K program with timed walk/run intervals and vibration alerts.
 
+## Screenshots
+
+| Week Menu | Day Menu | Workout | Paused |
+|-----------|----------|---------|--------|
+| ![Week Menu](screenshots/1-week-menu.png) | ![Day Menu](screenshots/2-day-menu.png) | ![Workout](screenshots/3-workout-warmup.png) | ![Paused](screenshots/4-paused.png) |
+
 ## Features
 
 - Full 9-week C25K program (3 days per week, 27 workouts)
