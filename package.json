@@ -16,7 +16,14 @@
     },
     "messageKeys": {},
     "resources": {
-      "media": []
+      "media": [
+        {
+          "type": "png",
+          "name": "IMAGE_MENU_ICON",
+          "file": "icon_menu.png",
+          "menuIcon": true
+        }
+      ]
     }
   }
 }
