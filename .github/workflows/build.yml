@@ -1,0 +1,61 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*.*.*"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Pebble SDK
+        run: |
+          pip install pebble-tool
+          pebble sdk install 4.9.169
+          echo "$HOME/.pebble-sdk/SDKs/current/bin" >> $GITHUB_PATH
+
+      - name: Build
+        run: pebble build
+
+      - name: Rename artifact
+        run: |
+          VERSION="${GITHUB_REF_NAME}"
+          if [[ "$VERSION" == v* ]]; then
+            cp build/pebble-c25k.pbw "pebble-c25k-${VERSION}.pbw"
+          else
+            SHORT_SHA="${GITHUB_SHA::7}"
+            cp build/pebble-c25k.pbw "pebble-c25k-${SHORT_SHA}.pbw"
+          fi
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pebble-c25k
+          path: "*.pbw"
+
+  release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pebble-c25k
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "*.pbw"
+          generate_release_notes: true
